@@ -2,11 +2,10 @@
  * @module Inferno-Test-Utils
  */ /** TypeDoc Comment */
 
-import { VNode } from "inferno";
+import { VNode, Component } from "inferno";
 import {
   isArray,
   isFunction,
-  isNullOrUndef,
   isObject,
   isString,
   throwError
@@ -25,6 +24,7 @@ import {
   renderToSnapshot as _renderToSnapshot,
   vNodeToSnapshot as _vNodeToSnapshot
 } from "./jest";
+import any = jasmine.any;
 
 // Type Checkers
 
@@ -73,7 +73,7 @@ export function isDOMElementOfType(instance: any, type: string): boolean {
   );
 }
 
-export function isRenderedClassComponent(instance: any): boolean {
+export function isRenderedClassComponent(instance: any): instance is Component<any, any> {
   return (
     Boolean(instance) &&
     isObject(instance) &&
@@ -142,16 +142,6 @@ export function findAllInVNodeTree(
 
 // Finder Helpers
 
-function parseSelector(filter) {
-  if (isArray(filter)) {
-    return filter;
-  } else if (isString(filter)) {
-    return filter.trim().split(/\s+/);
-  } else {
-    return [];
-  }
-}
-
 function findOneOf(
   tree: any,
   filter: any,
@@ -170,39 +160,6 @@ function findOneOf(
 
 // Scry Utilities
 
-export function scryRenderedDOMElementsWithClass(
-  renderedTree: any,
-  classNames: string | string[]
-): Element[] {
-  return findAllInRenderedTree(renderedTree, instance => {
-    if (_isDOMVNode(instance)) {
-      let domClassName = (instance.dom as Element).className;
-      if (
-        !isString(domClassName) &&
-        !isNullOrUndef(instance.dom) &&
-        isFunction(instance.dom.getAttribute)
-      ) {
-        // SVG || null, probably
-        domClassName = (instance.dom as Element).getAttribute("class") || "";
-      }
-      const domClassList = parseSelector(domClassName);
-      return parseSelector(classNames).every(className => {
-        return domClassList.indexOf(className) !== -1;
-      });
-    }
-    return false;
-  }).map(instance => instance.dom);
-}
-
-export function scryRenderedDOMElementsWithTag(
-  renderedTree: any,
-  tagName: string
-): Element[] {
-  return findAllInRenderedTree(renderedTree, instance => {
-    return isDOMVNodeOfType(instance, tagName);
-  }).map(instance => instance.dom);
-}
-
 export function scryRenderedVNodesWithType(
   renderedTree: any,
   type: string | Function
@@ -214,7 +171,7 @@ export function scryRenderedVNodesWithType(
 
 export function scryVNodesWithType(
   vNodeTree: VNode,
-  type: string | Function
+  type: Function
 ): VNode[] {
   return findAllInVNodeTree(vNodeTree, instance =>
     isVNodeOfType(instance, type)
@@ -222,30 +179,6 @@ export function scryVNodesWithType(
 }
 
 // Find Utilities
-
-export function findRenderedDOMElementWithClass(
-  renderedTree: any,
-  classNames: string | string[]
-): Element {
-  return findOneOf(
-    renderedTree,
-    classNames,
-    "class",
-    scryRenderedDOMElementsWithClass
-  );
-}
-
-export function findRenderedDOMElementWithTag(
-  renderedTree: any,
-  tagName: string
-): Element {
-  return findOneOf(
-    renderedTree,
-    tagName,
-    "tag",
-    scryRenderedDOMElementsWithTag
-  );
-}
 
 export function findRenderedVNodeWithType(
   renderedTree: any,
@@ -276,8 +209,6 @@ export default {
   Wrapper: _Wrapper,
   findAllInRenderedTree,
   findAllInVNodeTree,
-  findRenderedDOMElementWithClass,
-  findRenderedDOMElementWithTag,
   findRenderedVNodeWithType,
   findVNodeWithType,
   getTagNameOfVNode: _getTagNameOfVNode,
@@ -297,8 +228,6 @@ export default {
   isVNodeOfType,
   renderIntoDocument: _renderIntoDocument,
   renderToSnapshot: _renderToSnapshot,
-  scryRenderedDOMElementsWithClass,
-  scryRenderedDOMElementsWithTag,
   scryRenderedVNodesWithType,
   scryVNodesWithType,
   vNodeToSnapshot: _vNodeToSnapshot

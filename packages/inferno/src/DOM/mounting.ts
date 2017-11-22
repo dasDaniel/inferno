@@ -18,7 +18,7 @@ import {
   isVNode, IV,
   options,
   VNode,
-  createIV, IVTypes,
+  createIV, IVTypes, IVFlags,
 } from "../core/implementation";
 import {
   componentToDOMNodeMap,
@@ -34,7 +34,6 @@ import { patchProp } from "./props";
 import {
   createClassComponentInstance
 } from "./utils/components";
-import IVFlags from "inferno-iv-flags";
 
 export function mount(
   iv: IV,
@@ -230,7 +229,6 @@ export function mountArrayChildren(
 ) {
   let firstValid = true;
   let child;
-  let node;
   iv.c = null;
   iv.f = IVFlags.HasInvalidChildren; // default to invalid
 
@@ -246,7 +244,7 @@ export function mountArrayChildren(
       const childIV = createIV(child, i);
 
       (iv.c as any[]).push(childIV);
-      node = mount(childIV, child, parentDOM, nextNode, lifecycle, context, isSVG, true);
+      mount(childIV, child, parentDOM, nextNode, lifecycle, context, isSVG, true);
     }
   }
 

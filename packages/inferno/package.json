@@ -29,8 +29,7 @@
   "rollup": {
     "bundledDependencies": [
       "inferno-shared",
-      "inferno-vnode-flags",
-      "inferno-iv-flags"
+      "inferno-vnode-flags"
     ],
     "moduleName": "Inferno"
   },
@@ -43,7 +42,6 @@
     "inferno-vnode-flags": "3.9.0"
   },
   "devDependencies": {
-    "inferno-utils": "3.9.0",
-    "inferno-iv-flags": "3.9.0"
+    "inferno-utils": "3.9.0"
   }
 }

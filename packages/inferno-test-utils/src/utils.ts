@@ -4,31 +4,32 @@
 
 import { Component, createVNode, render, VNode } from "inferno";
 import VNodeFlags from "inferno-vnode-flags";
-import { isNumber, isObject } from "inferno-shared";
+import {isInvalid, isNumber, isObject} from "inferno-shared";
 
 export function isVNode(instance: any): instance is VNode {
   return (
-    Boolean(instance) &&
+    !isInvalid(instance) &&
     isObject(instance) &&
-    isNumber((instance as any).flags) &&
-    (instance as any).flags > 0
+    isNumber((instance as any).flags)
   );
 }
 
 export function isFunctionalVNode(instance: VNode): boolean {
   return (
-    isVNode(instance) && Boolean(instance.flags & VNodeFlags.ComponentFunction)
+    isVNode(instance) && (instance.flags & VNodeFlags.ComponentFunction) > 0
   );
 }
 
 export function isClassVNode(instance: VNode): boolean {
   return (
-    isVNode(instance) && Boolean(instance.flags & VNodeFlags.ComponentClass)
+    isVNode(instance) && (instance.flags & VNodeFlags.ComponentClass) > 0
   );
 }
 
 export function isComponentVNode(inst: VNode): boolean {
-  return isFunctionalVNode(inst) || isClassVNode(inst);
+  return (
+    isVNode(inst) && (inst.flags & VNodeFlags.Component) > 0
+  );
 }
 
 export function getTagNameOfVNode(inst: any) {

@@ -147,6 +147,7 @@ describe("Component lifecycle", () => {
 
     class Child extends Component {
       componentWillUnmount() {
+        debugger;
         // verify its not removed from DOM tree yet.
         expect(this.element.parentElement.parentElement).toBe(container);
       }

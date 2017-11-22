@@ -14,7 +14,6 @@ npm install inferno-test-utils --save-dev
 * [`renderIntoDocument`](#renderintodocumentvnodetree)
 * [`findAllInRenderedTree`](#findallinrenderedtreerenderedtree-predicate)
 * [`findAllInVNodeTree`](#findallinvnodetreevnodetree-predicate)
-* [`scryRenderedDOMElementsWithClass`](#scryrendereddomelementswithclassrenderedtree-classnames)
 * [`findRenderedDOMElementWithClass`](#findrendereddomelementwithclassrenderedtree-classnames)
 * [`scryRenderedDOMElementsWithTag`](#scryrendereddomelementswithtagrenderedtree-tagname)
 * [`findRenderedDOMElementWithTag`](#findrendereddomelementwithtagrenderedtree-tagname)

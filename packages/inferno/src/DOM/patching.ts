@@ -16,7 +16,7 @@ import {
   throwError
 } from "inferno-shared";
 import VNodeFlags from "inferno-vnode-flags";
-import {isVNode, options, VNode, IV, createIV, Refs, IVTypes} from "../core/implementation";
+import {isVNode, options, VNode, IV, createIV, Refs, IVTypes, IVFlags} from "../core/implementation";
 import {
   mount,
   mountArrayChildren,
@@ -40,8 +40,7 @@ import {
   processElement
 } from "./wrappers/processElement";
 import {patchProp, removeProp} from "./props";
-import IVFlags from "../../../inferno-iv-flags/src/index";
-import {Component} from "packages/inferno/src/DOM/rendering";
+import {Component} from "./rendering";
 
 function replaceDOM(iv: IV, parentDOM: Element, mountFn: Function, nextInput, lifecycle, context, isSVG) {
   unmount(iv, null);

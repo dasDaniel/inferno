@@ -29,8 +29,8 @@ export type InfernoChildren =
   | boolean
   | undefined
   | VNode
-  | Array<string | number | VNode>
-  | null;
+  | null
+  | Array<string | number | boolean | undefined | VNode | null>;
 
 export interface Props {
   children?: InfernoChildren;
@@ -89,17 +89,26 @@ export const enum IVTypes {
   IsVirtualArray = 1 << 1
 }
 
+export const enum IVFlags {
+  HasInvalidChildren = 1,
+  HasKeyedChildren = 1 << 1,
+  HasNonKeydChildren = 1 << 2,
+  HasTextChildren = 1 << 3,
+  HasBasicChildren = 1 << 4,
+}
+
 // Internal representation of VNode
 export interface IV {
   b: IV | null; // Base - reference to IVs parent only used for Components to handle root changing
-  c: IV | IV[] | null; // Children
+  c: InfernoChildren; // Children
   d: Element | null; // DOM
   f: number; // ChildFlags - number that tells what type of children this IV has
-  i: Component<any, any>|null|number; // Component instance reference
   k: string | number | null; // Key (keyed algorithm)
+
+
+  // TODO: We cannot keep vNode as reference from internal vNode because vNode could be hoisted and modified, and that way it would modify IV's vnode also by reference
   p: number; // Position (non keyed algorithm)
   t: number; // Type Flags about this IV
-  v: VNode | string | number | any[];
 }
 
 
